@@ -25,12 +25,12 @@ export class AuthService {
     }
   }
 
-  login(data: { email: string; motDePasse: string }) {
+  login(data: { email: string; password: string }) {
     return this.http.post<any>(`${this.apiUrl}/login`, data);
   }
 
   signup(data: any) {
-    return this.http.post<any>(`${this.apiUrl}/register`, data);
+    return this.http.post<any>(`${this.apiUrl}/signup`, data);
   }
 
   setSession(token: string, user: any) {
@@ -49,15 +49,11 @@ export class AuthService {
     this.currentUserSubject.next(null);
   }
 
-  isAuthenticated(): boolean {
+  isLoggedIn(): boolean {
     return this.isBrowser && !!localStorage.getItem('token');
   }
 
-  getToken(){
-    return localStorage.getItem('token');
-  }
-
-  getCurrentUser() {
+  getUser() {
     return this.currentUserSubject.value;
   }
 }

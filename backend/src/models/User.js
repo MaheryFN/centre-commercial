@@ -1,21 +1,17 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-// email, telephone, motDePasse, role, nom, prenom, image
 const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
-  motDePasse: { type: String, required: true },
-  telephone: { type: String },
-  nom: { type: String },
-  role: { type: String,enum:["admin","boutique","client"] },
-  prenom: { type: String },
-  Image: { type: String }
+  password: { type: String, required: true },
+  phone: { type: String },
+  nom: { type: String }
 });
 
 // Hash le mot de passe avant sauvegarde
 userSchema.pre('save', function(next) {
-  if (!this.isModified('motDePasse')) return next();
-  this.motDePasse = bcrypt.hashSync(this.motDePasse, 10);
+  if (!this.isModified('password')) return next();
+  this.password = bcrypt.hashSync(this.password, 10);
   next();
 });
 

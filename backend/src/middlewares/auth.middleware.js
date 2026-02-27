@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-exports.auth= (req, res, next)=> {
+function verifyToken(req, res, next) {
   const authHeader = req.headers['authorization'];
   if (!authHeader) {
     return res.status(401).json({ message: "Token manquant" });
@@ -12,21 +12,9 @@ exports.auth= (req, res, next)=> {
     if (err) {
       return res.status(401).json({ message: "Token invalide" });
     }
-    req.user = decoded; // contient id et email sy role
+    req.user = decoded; // contient id et email
     next();
   });
 }
 
-exports.checkRole= (roles) => {
-  return (req, res, next) => {
-    if (!req.user) return res.status(401).json({ message: 'Utilisateur non authentifié' });
-
-    if (!roles.includes(req.user.role)) {
-      return res.status(403).json({ message: 'Accès interdit: rôle non autorisé' });
-    }
-
-    next();
-  };
-}
-
-// module.exports = verifyToken;
+module.exports = verifyToken;
